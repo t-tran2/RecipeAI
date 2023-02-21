@@ -1,4 +1,4 @@
-package com.example.recipeai.ui.home
+package com.example.recipeai.ui.generate
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.recipeai.databinding.FragmentHomeBinding
+import com.example.recipeai.databinding.FragmentGenerateBinding
 
-class HomeFragment : Fragment() {
+class GenerateFragment : Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null
+    private var _binding: FragmentGenerateBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,14 +22,14 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+        val generateViewModel =
+            ViewModelProvider(this).get(GenerateViewModel::class.java)
 
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentGenerateBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
+        val textView: TextView = binding.textDashboard
+        generateViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root
