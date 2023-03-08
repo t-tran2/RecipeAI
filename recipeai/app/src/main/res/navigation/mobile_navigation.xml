@@ -3,23 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_ingredients">
+    app:startDestination="@+id/navigation_home">
 
     <fragment
-        android:id="@+id/navigation_ingredients"
+        android:id="@+id/navigation_home"
         android:name="com.example.recipeai.ui.ingredients.IngredientsFragment"
         android:label="@string/title_ingredients"
         tools:layout="@layout/fragment_ingredients" />
 
     <fragment
-        android:id="@+id/navigation_generate"
+        android:id="@+id/navigation_dashboard"
         android:name="com.example.recipeai.ui.generate.GenerateFragment"
         android:label="@string/title_generate"
         tools:layout="@layout/fragment_generate" />
 
     <fragment
-        android:id="@+id/navigation_library"
-        android:name="com.example.recipeai.ui.library.NotificationsFragment"
+        android:id="@+id/navigation_notifications"
+        android:name="com.example.recipeai.ui.library.LibraryFragment"
         android:label="@string/title_library"
         tools:layout="@layout/fragment_library" />
 </navigation>
