@@ -3,6 +3,8 @@
     <string name="title_ingredients">Ingredients</string>
     <string name="title_generate">Generate</string>
     <string name="title_library">Recipe Library</string>
+    <string name="title_cooking">Cooking Mode</string>
     <string name="add_ingredients">Add Ingredients</string>
     <string name="test_ingredient_name">Test Ingredient Name</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
