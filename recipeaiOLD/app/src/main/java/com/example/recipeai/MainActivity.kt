@@ -1,7 +1,6 @@
 package com.example.recipeai
 
 import android.os.Bundle
-import android.util.Log
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -15,7 +14,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("onCreateActivity", "onCreate lifecycle triggered")
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -33,45 +31,5 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-
     }
-
-    override fun onStart(){
-        super.onStart()
-        Log.d("onStartActivity", "onStart lifecycle triggered")
-
-    }
-
-    override fun onResume(){
-        super.onResume()
-        Log.d("onResumeActivity", "onResume lifecycle triggered")
-
-    }
-    override fun onDestroy(){
-        super.onDestroy()
-        Log.d("onDestroyActivity", "onDestroy lifecycle triggered")
-
-    }
-
-    override fun onStop(){
-        super.onStop()
-        Log.d("onStopActivity", "onStop lifecycle triggered")
-
-    }
-
-    override fun onPause(){
-        super.onPause()
-        Log.d("onPauseActivity", "onPause lifecycle triggered")
-
-    }
-
-
-
-
-
-
-
-
-
-
 }
