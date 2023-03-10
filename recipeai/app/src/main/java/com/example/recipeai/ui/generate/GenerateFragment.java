@@ -18,8 +18,8 @@ public class GenerateFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        GenerateViewModel generateViewModel =
-                new ViewModelProvider(this).get(GenerateViewModel.class);
+        com.example.recipeai.ui.generate.GenerateViewModel generateViewModel =
+                new ViewModelProvider(this).get(com.example.recipeai.ui.generate.GenerateViewModel.class);
 
         binding = FragmentGenerateBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
