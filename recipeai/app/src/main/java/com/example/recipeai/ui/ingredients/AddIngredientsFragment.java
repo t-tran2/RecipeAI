@@ -8,16 +8,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.recipeai.R;
 import com.example.recipeai.databinding.FragmentAddIngredientsBinding;
 import com.example.recipeai.databinding.FragmentIngredientsBinding;
+import com.example.recipeai.model.Ingredient;
 
 
 public class AddIngredientsFragment extends Fragment{
 
     private FragmentAddIngredientsBinding binding;
     private Button button;
+    TextView inputIngredient;
     public AddIngredientsFragment() {
         // Required empty public constructor
     }
@@ -35,9 +38,14 @@ public class AddIngredientsFragment extends Fragment{
         binding = FragmentAddIngredientsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         button = root.findViewById(R.id.addIngredientsButton);
+        inputIngredient = root.findViewById(R.id.editTextAddIngredient);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                String ingredientName = inputIngredient.getText().toString();
+                Ingredient ingredient = new Ingredient(ingredientName);
+
 
             }
         });

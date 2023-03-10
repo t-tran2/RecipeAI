@@ -9,7 +9,7 @@
 
 
     <EditText
-        android:id="@+id/editTextTextAddIngredient"
+        android:id="@+id/editTextAddIngredient"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="100dp"
@@ -32,7 +32,7 @@
         android:text="@string/add_ingredients"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextAddIngredient" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextAddIngredient" />
 
     <TextView
         android:id="@+id/textView"
