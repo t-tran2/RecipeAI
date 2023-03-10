@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.recipeai.adapter.IngredientsAdapter;
 import com.example.recipeai.databinding.FragmentIngredientsBinding;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.ktx.Firebase;
 
@@ -47,6 +48,17 @@ public class IngredientsFragment extends Fragment {
 
         // Setup firestore
         firestoreDb = FirebaseFirestore.getInstance();
+
+
+        // TODO: Uncomment for TESTING. Delete for PROD.
+//        firestoreDb.useEmulator("10.0.2.2", 8080);
+//        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+//                .setPersistenceEnabled(false)
+//                .build();
+//        firestoreDb.setFirestoreSettings(settings);
+
+        // Fetch ingredients collection from firebase db
+        query = firestoreDb.collection("ingredients");
 
         // RecyclerView of ingredients
         if (query != null) {
