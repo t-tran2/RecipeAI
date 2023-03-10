@@ -34,7 +34,7 @@ public class AddIngredientsFragment extends Fragment{
         inflater.inflate(R.layout.fragment_add_ingredients, container, false);
         binding = FragmentAddIngredientsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        button = root.findViewById(R.id.add_ingredients_btn);
+        button = root.findViewById(R.id.addIngredientsButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
