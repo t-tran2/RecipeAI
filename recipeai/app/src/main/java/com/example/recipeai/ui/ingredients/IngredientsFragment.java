@@ -4,14 +4,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.recipeai.R;
+import com.example.recipeai.adapter.FirestoreAdapter;
 import com.example.recipeai.adapter.IngredientsAdapter;
 import com.example.recipeai.databinding.FragmentIngredientsBinding;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -34,7 +38,21 @@ public class IngredientsFragment extends Fragment {
                 new ViewModelProvider(this).get(IngredientsViewModel.class);
 
         binding = FragmentIngredientsBinding.inflate(inflater, container, false);
+
         View root = binding.getRoot();
+
+        // Get a reference to the button view
+        Button addIngredients = root.findViewById(R.id.add_ingredients_btn);
+
+        // Set an OnClickListener to the button view
+        addIngredients.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // navigate to another fragment
+                Navigation.findNavController(v).navigate(R.id.AddIngredientsFragment);
+            }
+        });
+
 
         return root;
     }

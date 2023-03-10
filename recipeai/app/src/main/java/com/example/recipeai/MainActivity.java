@@ -34,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-//        // Create database instance
+        // TODO: DELETE?
+        // Create database instance
 //        FirebaseDatabase database = FirebaseDatabase.getInstance();
 //        DatabaseReference dbRef = database.getReference("Ingredients");
 
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
+        // TODO: DELETE?
 //        // Read from the database
 //        dbRef.addValueEventListener(new ValueEventListener() {
 //            @Override
