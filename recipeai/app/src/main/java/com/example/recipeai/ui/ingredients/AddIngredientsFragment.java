@@ -26,7 +26,6 @@ public class AddIngredientsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
     }
 
     @Override
@@ -37,6 +36,5 @@ public class AddIngredientsFragment extends Fragment {
         View root = binding.getRoot();
 
         return root;
-
     }
 }

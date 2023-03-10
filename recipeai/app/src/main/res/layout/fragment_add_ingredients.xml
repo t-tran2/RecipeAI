@@ -15,7 +15,7 @@
         android:layout_marginTop="160dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="@string/add_ingredients_prompt"
+        android:text="Type ingredient here..."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
