@@ -79,7 +79,6 @@ public class IngredientsFragment extends Fragment {
 
         // Enable Firestore logging
         FirebaseFirestore.setLoggingEnabled(true);
-
         // Setup firestore
         firestoreDb = FirebaseFirestore.getInstance();
 
@@ -93,6 +92,7 @@ public class IngredientsFragment extends Fragment {
 
         // Fetch ingredients collection from firebase db
         query = firestoreDb.collection("ingredients");
+
 
         // RecyclerView of ingredients
         if (query != null) {
@@ -108,7 +108,6 @@ public class IngredientsFragment extends Fragment {
                     }
                 }
             });
-
             // Set adapter for recycler view ingredients
             binding.ingredientsRecyclerview.setAdapter(ingredientsAdapter);
         }

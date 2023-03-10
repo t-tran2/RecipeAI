@@ -14,6 +14,9 @@ import com.example.recipeai.R;
 import com.example.recipeai.databinding.FragmentAddIngredientsBinding;
 import com.example.recipeai.databinding.FragmentIngredientsBinding;
 import com.example.recipeai.model.Ingredient;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 
 public class AddIngredientsFragment extends Fragment{
@@ -21,6 +24,8 @@ public class AddIngredientsFragment extends Fragment{
     private FragmentAddIngredientsBinding binding;
     private Button button;
     TextView inputIngredient;
+    private FirebaseFirestore firestoreDb;
+    private Query query;
     public AddIngredientsFragment() {
         // Required empty public constructor
     }
@@ -39,13 +44,19 @@ public class AddIngredientsFragment extends Fragment{
         View root = binding.getRoot();
         button = root.findViewById(R.id.addIngredientsButton);
         inputIngredient = root.findViewById(R.id.editTextAddIngredient);
+
+        FirebaseFirestore.setLoggingEnabled(true);
+        firestoreDb = FirebaseFirestore.getInstance();
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 String ingredientName = inputIngredient.getText().toString();
-                Ingredient ingredient = new Ingredient(ingredientName);
 
+                CollectionReference dbIngredients =  firestoreDb.collection("ingredients");
+                Ingredient ingredient = new Ingredient(ingredientName);
+                // below method is use to add data to Firebase Firestore.
+                dbIngredients.add(ingredient);
 
             }
         });
