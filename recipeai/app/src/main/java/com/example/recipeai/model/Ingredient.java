@@ -1,4 +1,4 @@
-package com.example.recipeai.ui.ingredients;
+package com.example.recipeai.model;
 
 public class Ingredient {
         int id;
@@ -15,7 +15,11 @@ public class Ingredient {
             this.category = category;
         }
 
-        public void setID(int id){
+    public String getName() {
+        return name;
+    }
+
+    public void setID(int id){
             this.id = id;
         }
 
