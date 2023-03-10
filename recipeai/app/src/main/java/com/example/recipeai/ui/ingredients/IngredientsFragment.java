@@ -48,7 +48,7 @@ public class IngredientsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // navigate to another fragment
-                Navigation.findNavController(v).navigate(R.id.AddIngredientsFragment);
+                Navigation.findNavController(v).navigate(R.layout.fragment_add_ingredients);
             }
         });
 
