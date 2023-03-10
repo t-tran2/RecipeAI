@@ -36,8 +36,6 @@ public class AddIngredientsFragment extends Fragment {
         binding = FragmentAddIngredientsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-
-
         return root;
 
     }
