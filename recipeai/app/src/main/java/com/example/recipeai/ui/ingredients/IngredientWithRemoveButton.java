@@ -20,6 +20,8 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.recipeai.R;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
  * TODO: document your custom view class.
@@ -48,9 +50,9 @@ public class IngredientWithRemoveButton extends ConstraintLayout {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View ingredientWithRemoveButton = inflater.inflate(R.layout.ingredient_with_remove_button, this);
 
-
         removeButton = findViewById(R.id.remove_button);
         ingredientText = findViewById(R.id.ingredient_name);
+
         removeButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {

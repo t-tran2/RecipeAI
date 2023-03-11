@@ -20,7 +20,6 @@ import com.google.firebase.firestore.Query;
 
 
 public class AddIngredientsFragment extends Fragment{
-
     private FragmentAddIngredientsBinding binding;
     private Button button;
     TextView inputIngredient;
@@ -56,7 +55,9 @@ public class AddIngredientsFragment extends Fragment{
                 CollectionReference dbIngredients =  firestoreDb.collection("ingredients");
                 Ingredient ingredient = new Ingredient(ingredientName);
                 // below method is use to add data to Firebase Firestore.
+                dbIngredients =  firestoreDb.collection("ingredients_inventory");
                 dbIngredients.add(ingredient);
+
 
             }
         });
