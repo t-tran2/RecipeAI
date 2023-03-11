@@ -1,9 +1,13 @@
 package com.example.recipeai.model;
 
+import com.google.firebase.firestore.DocumentReference;
+
 public class Ingredient {
-        int id;
         String name;
         String category;
+        DocumentReference ingredientId;
+        DocumentReference userId;
+
 
         public Ingredient() {}
 
@@ -11,21 +15,19 @@ public class Ingredient {
             this.name = name;
         }
 
-        public Ingredient(int id, String name, String category){
+        public Ingredient(DocumentReference id, String name, DocumentReference userId){
             this.name = name;
-            this.id = id;
-            this.category = category;
+            this.ingredientId = id;
+            this.userId = userId;
         }
+
 
     public String getName() {
         return name;
     }
+    public DocumentReference getUserId(){return userId;
+    }
+    public DocumentReference getIngredientId(){return ingredientId;
+    }
 
-    public void setID(int id){
-            this.id = id;
-        }
-
-        public void setCategory(String category){
-            this.category = category;
-        }
 }

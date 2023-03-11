@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -49,11 +51,26 @@ public class IngredientsFragment extends Fragment {
         addIngredients.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // navigate to another fragment
-//                Navigation.findNavController(v).navigate(R.id.AddIngredientsFragment);
+
+                // Create an instance of the destination fragment
+                AddIngredientsFragment addIngredientsFragment = new AddIngredientsFragment();
+
+                // Get a reference to the fragment manager
+                FragmentManager fragmentManager = getParentFragmentManager();
+
+                // Start a fragment transaction
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                // Replace the current fragment with the destination fragment
+                fragmentTransaction.replace(R.id.nav_host_fragment_activity_main, addIngredientsFragment);
+
+                // Add the transaction to the back stack
+                fragmentTransaction.addToBackStack(null);
+
+                // Commit the transaction
+                fragmentTransaction.commit();
             }
         });
-
 
         return root;
     }
@@ -64,7 +81,6 @@ public class IngredientsFragment extends Fragment {
 
         // Enable Firestore logging
         FirebaseFirestore.setLoggingEnabled(true);
-
         // Setup firestore
         firestoreDb = FirebaseFirestore.getInstance();
 
@@ -80,6 +96,7 @@ public class IngredientsFragment extends Fragment {
         DocumentReference johnDocRef = firestoreDb.collection("users").document("VmpfS4tyaSUn64ucP203");
         query = firestoreDb.collection("ingredients_inventory").whereEqualTo("user_id", johnDocRef);
 
+
         // RecyclerView of ingredients
         if (query != null) {
             ingredientsAdapter = new IngredientsAdapter(query);
@@ -94,7 +111,6 @@ public class IngredientsFragment extends Fragment {
                     }
                 }
             });
-
             // Set adapter for recycler view ingredients
             binding.ingredientsRecyclerview.setAdapter(ingredientsAdapter);
         }
