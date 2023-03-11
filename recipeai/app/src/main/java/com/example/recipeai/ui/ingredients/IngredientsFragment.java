@@ -18,6 +18,7 @@ import com.example.recipeai.R;
 import com.example.recipeai.adapter.FirestoreAdapter;
 import com.example.recipeai.adapter.IngredientsAdapter;
 import com.example.recipeai.databinding.FragmentIngredientsBinding;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
@@ -49,7 +50,7 @@ public class IngredientsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // navigate to another fragment
-                Navigation.findNavController(v).navigate(R.id.AddIngredientsFragment);
+//                Navigation.findNavController(v).navigate(R.id.AddIngredientsFragment);
             }
         });
 
@@ -76,7 +77,8 @@ public class IngredientsFragment extends Fragment {
 //        firestoreDb.setFirestoreSettings(settings);
 
         // Fetch ingredients collection from firebase db
-        query = firestoreDb.collection("ingredients");
+        DocumentReference johnDocRef = firestoreDb.collection("users").document("VmpfS4tyaSUn64ucP203");
+        query = firestoreDb.collection("ingredients_inventory").whereEqualTo("user_id", johnDocRef);
 
         // RecyclerView of ingredients
         if (query != null) {
