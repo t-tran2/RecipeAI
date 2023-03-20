@@ -93,6 +93,7 @@ public class IngredientsFragment extends Fragment {
 //        firestoreDb.setFirestoreSettings(settings);
 
         // Fetch ingredients collection from firebase db
+        // TODO: SPECIFIC USER SELECTED
         DocumentReference johnDocRef = firestoreDb.collection("users").document("VmpfS4tyaSUn64ucP203");
         query = firestoreDb.collection("ingredients_inventory").whereEqualTo("user_id", johnDocRef);
 
