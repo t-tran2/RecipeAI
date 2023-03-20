@@ -40,7 +40,6 @@ public class IngredientsAdapter extends FirestoreAdapter<IngredientsAdapter.View
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         viewHolder.ingredient = getSnapshot(position).toObject(Ingredient.class);
 
-
         if (viewHolder.ingredient == null) {
             return;
         }
@@ -55,7 +54,6 @@ public class IngredientsAdapter extends FirestoreAdapter<IngredientsAdapter.View
         Ingredient ingredient;
         Button button;
         private FirebaseFirestore firestoreDb;
-
         DocumentReference ingredientDocRef;
 
         public ViewHolder(IngredientWithRemoveButtonBinding binding) {

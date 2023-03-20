@@ -5,8 +5,8 @@ import com.google.firebase.firestore.DocumentReference;
 public class Ingredient {
         String name;
         String category;
-        DocumentReference ingredientId;
-        DocumentReference userId;
+        DocumentReference ingredient_id;
+        DocumentReference user_id;
 
 
         public Ingredient() {}
@@ -17,17 +17,17 @@ public class Ingredient {
 
         public Ingredient(DocumentReference id, String name, DocumentReference userId){
             this.name = name;
-            this.ingredientId = id;
-            this.userId = userId;
+            this.ingredient_id = id;
+            this.user_id = userId;
         }
 
 
     public String getName() {
         return name;
     }
-    public DocumentReference getUserId(){return userId;
+    public DocumentReference getUserId(){return user_id;
     }
-    public DocumentReference getIngredientId(){return ingredientId;
+    public DocumentReference getIngredientId(){return ingredient_id;
     }
 
 }

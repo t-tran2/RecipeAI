@@ -2,6 +2,7 @@ package com.example.recipeai.ui.ingredients;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -14,9 +15,13 @@ import com.example.recipeai.R;
 import com.example.recipeai.databinding.FragmentAddIngredientsBinding;
 import com.example.recipeai.databinding.FragmentIngredientsBinding;
 import com.example.recipeai.model.Ingredient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 
 public class AddIngredientsFragment extends Fragment{
@@ -51,18 +56,30 @@ public class AddIngredientsFragment extends Fragment{
             @Override
             public void onClick(View view) {
                 String ingredientName = inputIngredient.getText().toString();
+                String userId = "users/VmpfS4tyaSUn64ucP203";
+                String ingredientId = "";
 
-                CollectionReference dbIngredients =  firestoreDb.collection("ingredients");
+                CollectionReference dbIngredients = firestoreDb.collection("ingredients");
+                CollectionReference dbIngredientsInventory = firestoreDb.collection("ingredients_inventory");
                 Ingredient ingredient = new Ingredient(ingredientName);
                 // below method is use to add data to Firebase Firestore.
-                dbIngredients =  firestoreDb.collection("ingredients_inventory");
-                dbIngredients.add(ingredient);
+
+                Task<QuerySnapshot> query = dbIngredients.whereEqualTo("name", ingredientName).get().addOnCompleteListener(
+                    new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (task.getResult().size() == 0) {
+                                dbIngredients.add(ingredient);
+                            }
+                        }
+                    }
+                });
 
 
             }
         });
-
-
         return root;
+
     }
 }
