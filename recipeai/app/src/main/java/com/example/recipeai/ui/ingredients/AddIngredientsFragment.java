@@ -15,9 +15,11 @@ import com.example.recipeai.R;
 import com.example.recipeai.databinding.FragmentAddIngredientsBinding;
 import com.example.recipeai.databinding.FragmentIngredientsBinding;
 import com.example.recipeai.model.Ingredient;
+import com.example.recipeai.model.IngredientInventory;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -56,16 +58,16 @@ public class AddIngredientsFragment extends Fragment{
             @Override
             public void onClick(View view) {
                 String ingredientName = inputIngredient.getText().toString();
-                String userId = "users/VmpfS4tyaSUn64ucP203";
-                String ingredientId = "";
+                DocumentReference johnDocRef = firestoreDb.collection("users").document("VmpfS4tyaSUn64ucP203");
+                DocumentReference ingredientRef = firestoreDb.collection("users").document("VmpfS4tyaSUn64ucP203");
 
                 CollectionReference dbIngredients = firestoreDb.collection("ingredients");
                 CollectionReference dbIngredientsInventory = firestoreDb.collection("ingredients_inventory");
+                IngredientInventory ingredientInventory = new IngredientInventory(johnDocRef,ingredientName,ingredientRef);
                 Ingredient ingredient = new Ingredient(ingredientName);
                 // below method is use to add data to Firebase Firestore.
 
-                Task<QuerySnapshot> query = dbIngredients.whereEqualTo("name", ingredientName).get().addOnCompleteListener(
-                    new OnCompleteListener<QuerySnapshot>() {
+                Task<QuerySnapshot> query = dbIngredients.whereEqualTo("name", ingredientName).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
@@ -73,12 +75,14 @@ public class AddIngredientsFragment extends Fragment{
                                 dbIngredients.add(ingredient);
                             }
                         }
+                        getParentFragmentManager().popBackStack();
                     }
                 });
-
-
+                dbIngredientsInventory.add(ingredientInventory);
             }
+
         });
+
         return root;
 
     }
