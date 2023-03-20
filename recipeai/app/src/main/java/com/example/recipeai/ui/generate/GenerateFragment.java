@@ -17,7 +17,20 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.recipeai.GPT3Api.GPT3Api;
 import com.example.recipeai.GPT3Api.GPT3Request;
 import com.example.recipeai.GPT3Api.GPT3Response;
+import com.example.recipeai.R;
 import com.example.recipeai.databinding.FragmentGenerateBinding;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import retrofit2.*;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -25,6 +38,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class GenerateFragment extends Fragment {
 
     private FragmentGenerateBinding binding;
+    private FirebaseFirestore firestoreDb;
+    private Query query;
 
     private static final String BASE_URL = "https://api.openai.com/v1/";
 
@@ -43,7 +58,7 @@ public class GenerateFragment extends Fragment {
         return root;
     }
 
-    public void makeApiCall(String prompt, int maxTokens) {
+    public void makeApiCall(int maxTokens) {
         // create a Retrofit instance
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -52,6 +67,9 @@ public class GenerateFragment extends Fragment {
 
         // create an instance of the API interface
         GPT3Api api = retrofit.create(GPT3Api.class);
+
+        // generate a prompt by getting the ingredients from DB
+        String prompt = generatePrompt();
 
         // create a GPT3Request object with the prompt, maxTokens, temperature, and apiKey properties set
         GPT3Request request = new GPT3Request(prompt, maxTokens);
@@ -80,7 +98,7 @@ public class GenerateFragment extends Fragment {
                     // handle API error
                     // avoid null pointer exception
                     assert response.errorBody() != null;
-                    Log.e(TAG, "API call failed: " + response.errorBody().toString());
+                    Log.e(TAG, "API call failed: " + response.errorBody());
                 }
             }
 
@@ -91,6 +109,39 @@ public class GenerateFragment extends Fragment {
                 Log.e(TAG, "API call failed: " + t.getMessage());
             }
         });
+    }
+
+    private String generatePrompt() {
+        FirebaseFirestore firestoreDb = FirebaseFirestore.getInstance();
+
+        // Fetch ingredients collection from Firebase Firestore
+        DocumentReference userDocRef = firestoreDb.collection("users").document("VmpfS4tyaSUn64ucP203");
+        CollectionReference inventoryRef = firestoreDb.collection("ingredients_inventory");
+        Query query = inventoryRef.whereEqualTo("name", userDocRef);
+
+        // Execute the query and get the results
+        Task<QuerySnapshot> querySnapshotTask = query.get();
+        while (!querySnapshotTask.isComplete()) {
+            // Wait for the query to complete
+        }
+        QuerySnapshot querySnapshot = querySnapshotTask.getResult();
+
+        List<String> results = new ArrayList<>();
+        for (DocumentSnapshot documentSnapshot : querySnapshot.getDocuments()) {
+            Map<String, Object> data = documentSnapshot.getData();
+            if (data.containsKey("user_id")) {
+                String idCode = (String) data.get("user_id");
+                if ("VmpfS4tyaSUn64ucP203".equals(idCode)) {
+                    results.add(idCode);
+                }
+            }
+        }
+
+        // Join the results into a single string separated by commas
+        String ingredients = String.join(",", results);
+
+        // Combine ingredients into template, return prompt
+        return String.format(getString(R.string.PROMPT_TEMPLATE), ingredients);
     }
 
     @SuppressLint("DefaultLocale")
