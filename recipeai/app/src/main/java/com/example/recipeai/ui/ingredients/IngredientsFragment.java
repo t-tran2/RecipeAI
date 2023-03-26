@@ -1,6 +1,7 @@
 package com.example.recipeai.ui.ingredients;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +14,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.recipeai.MainActivity;
 import com.example.recipeai.R;
 import com.example.recipeai.adapter.FirestoreAdapter;
 import com.example.recipeai.adapter.IngredientsAdapter;
@@ -27,9 +31,6 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.ktx.Firebase;
 
 public class IngredientsFragment extends Fragment {
-
-    private FirebaseFirestore firestoreDb;
-    private Query query;
 
     private FragmentIngredientsBinding binding;
     private IngredientsAdapter ingredientsAdapter;
@@ -48,28 +49,27 @@ public class IngredientsFragment extends Fragment {
         Button addIngredients = root.findViewById(R.id.add_ingredients_btn);
 
         // Set an OnClickListener to the button view
-        addIngredients.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        addIngredients.setOnClickListener(v -> {
 
-                // Create an instance of the destination fragment
-                AddIngredientsFragment addIngredientsFragment = new AddIngredientsFragment();
+            // Create an instance of the destination fragment
+            AddIngredientsFragment addIngredientsFragment = new AddIngredientsFragment();
 
-                // Get a reference to the fragment manager
-                FragmentManager fragmentManager = getParentFragmentManager();
+            // Get a reference to the fragment manager
+            FragmentManager fragmentManager = getParentFragmentManager();
 
-                // Start a fragment transaction
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            // Start a fragment transaction
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-                // Replace the current fragment with the destination fragment
-                fragmentTransaction.replace(R.id.nav_host_fragment_activity_main, addIngredientsFragment);
+            ((MainActivity) getActivity()).hideBottomAppBar();
 
-                // Add the transaction to the back stack
-                fragmentTransaction.addToBackStack(null);
+            // Replace the current fragment with the destination fragment
+            fragmentTransaction.replace(R.id.nav_host_fragment_activity_main, addIngredientsFragment);
 
-                // Commit the transaction
-                fragmentTransaction.commit();
-            }
+            // Add the transaction to the back stack
+            fragmentTransaction.addToBackStack(null);
+
+            // Commit the transaction
+            fragmentTransaction.commit();
         });
 
         return root;
@@ -82,7 +82,7 @@ public class IngredientsFragment extends Fragment {
         // Enable Firestore logging
         FirebaseFirestore.setLoggingEnabled(true);
         // Setup firestore
-        firestoreDb = FirebaseFirestore.getInstance();
+        FirebaseFirestore firestoreDb = FirebaseFirestore.getInstance();
 
 
         // TODO: Uncomment for TESTING. Delete for PROD.
@@ -95,26 +95,22 @@ public class IngredientsFragment extends Fragment {
         // Fetch ingredients collection from firebase db
         // TODO: SPECIFIC USER SELECTED
         DocumentReference johnDocRef = firestoreDb.collection("users").document("VmpfS4tyaSUn64ucP203");
-        query = firestoreDb.collection("ingredients_inventory").whereEqualTo("userId", johnDocRef);
+        Query query = firestoreDb.collection("ingredients_inventory").whereEqualTo("userId", johnDocRef);
 
 
         // RecyclerView of ingredients
-        if (query != null) {
-            ingredientsAdapter = new IngredientsAdapter(query);
-            ingredientsAdapter.setOnDataChangedListener(new IngredientsAdapter.OnDataChangedListener() {
-                @Override
-                public void onDataChanged() {
-                    // Only display if query not empty
-                    if (ingredientsAdapter.getItemCount() > 0) {
-                        binding.ingredientsRecyclerview.setVisibility(View.VISIBLE);
-                    } else {
-                        binding.ingredientsRecyclerview.setVisibility(View.GONE);
-                    }
-                }
-            });
-            // Set adapter for recycler view ingredients
-            binding.ingredientsRecyclerview.setAdapter(ingredientsAdapter);
-        }
+        ingredientsAdapter = new IngredientsAdapter(query);
+        ingredientsAdapter.setOnDataChangedListener(() -> {
+            // Only display if query not empty
+            if (ingredientsAdapter.getItemCount() > 0) {
+                binding.ingredientsRecyclerview.setVisibility(View.VISIBLE);
+            } else {
+                binding.ingredientsRecyclerview.setVisibility(View.GONE);
+            }
+        });
+
+        // Set adapter for recycler view ingredients
+        binding.ingredientsRecyclerview.setAdapter(ingredientsAdapter);
         binding.ingredientsRecyclerview.setLayoutManager(new LinearLayoutManager(requireContext()));
     }
 
