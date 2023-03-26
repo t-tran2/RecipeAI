@@ -18,7 +18,7 @@
         android:autoText="false"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="@string/type_ingredient_here"
+        android:hint="@string/type_ingredient_here"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />

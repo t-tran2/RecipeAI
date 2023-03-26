@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,7 +31,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import retrofit2.*;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -53,8 +53,20 @@ public class GenerateFragment extends Fragment {
         binding = FragmentGenerateBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textGenerate;
-//        generateViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        // Get a reference to the button view
+        Button generateRecipe = root.findViewById(R.id.generate_btn);
+
+        // Get a reference to the text view
+        TextView promptDisplay = root.findViewById(R.id.prompt_display);
+
+        // Set an OnClickListener to the button view
+        generateRecipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                promptDisplay.setText(generatePrompt());
+            }
+        });
+
         return root;
     }
 
@@ -117,24 +129,28 @@ public class GenerateFragment extends Fragment {
         // Fetch ingredients collection from Firebase Firestore
         DocumentReference userDocRef = firestoreDb.collection("users").document("VmpfS4tyaSUn64ucP203");
         CollectionReference inventoryRef = firestoreDb.collection("ingredients_inventory");
-        Query query = inventoryRef.whereEqualTo("name", userDocRef);
+        Query query = inventoryRef.whereEqualTo("userId", userDocRef);
 
         // Execute the query and get the results
         Task<QuerySnapshot> querySnapshotTask = query.get();
         while (!querySnapshotTask.isComplete()) {
             // Wait for the query to complete
         }
-        QuerySnapshot querySnapshot = querySnapshotTask.getResult();
+
+//        Debug
+          QuerySnapshot querySnapshot = querySnapshotTask.getResult();
+//        List<DocumentSnapshot> documents = querySnapshot.getDocuments();
+//        for (DocumentSnapshot document : documents) {
+//            String name = document.getString("name");
+//            System.out.println("Name: " + name);
+//        }
 
         List<String> results = new ArrayList<>();
         for (DocumentSnapshot documentSnapshot : querySnapshot.getDocuments()) {
             Map<String, Object> data = documentSnapshot.getData();
-            if (data.containsKey("user_id")) {
-                String idCode = (String) data.get("user_id");
-                if ("VmpfS4tyaSUn64ucP203".equals(idCode)) {
-                    results.add(idCode);
-                }
-            }
+                String ingredientName = (String) data.get("name");
+                    System.out.println("Ingredient:" + ingredientName);
+                    results.add(ingredientName);
         }
 
         // Join the results into a single string separated by commas
