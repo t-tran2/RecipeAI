@@ -2,6 +2,8 @@ package com.example.recipeai.ui.generate;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import static java.lang.Thread.*;
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,6 +33,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.io.IOException;
 
 import retrofit2.*;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -48,29 +51,32 @@ public class GenerateFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         com.example.recipeai.ui.generate.GenerateViewModel generateViewModel =
-                new ViewModelProvider(this).get(com.example.recipeai.ui.generate.GenerateViewModel.class);
+                        new ViewModelProvider(this).get(com.example.recipeai.ui.generate.GenerateViewModel.class);
 
-        binding = FragmentGenerateBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+                binding = FragmentGenerateBinding.inflate(inflater, container, false);
+                View root = binding.getRoot();
 
-        // Get a reference to the button view
-        Button generateRecipe = root.findViewById(R.id.generate_btn);
+                // Get a reference to the button view
+                Button generateRecipe = root.findViewById(R.id.generate_btn);
 
-        // Get a reference to the text view
-        TextView promptDisplay = root.findViewById(R.id.prompt_display);
+                // Get a reference to the text view
+                TextView promptDisplay = root.findViewById(R.id.prompt_display);
 
-        // Set an OnClickListener to the button view
-        generateRecipe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                promptDisplay.setText(generatePrompt());
-            }
-        });
+                // Set an OnClickListener to the button view
+                generateRecipe.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //System.out.println(generatePrompt());
+                        makeApiCall(300, generatePrompt());
+                    }
+                });
 
         return root;
     }
 
-    public void makeApiCall(int maxTokens) {
+    String recipeText;
+
+    public void makeApiCall(int max_tokens, String recipePrompt) {
         // create a Retrofit instance
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -80,11 +86,8 @@ public class GenerateFragment extends Fragment {
         // create an instance of the API interface
         GPT3Api api = retrofit.create(GPT3Api.class);
 
-        // generate a prompt by getting the ingredients from DB
-        String prompt = generatePrompt();
-
         // create a GPT3Request object with the prompt, maxTokens, temperature, and apiKey properties set
-        GPT3Request request = new GPT3Request(prompt, maxTokens);
+        GPT3Request request = new GPT3Request(recipePrompt, max_tokens, 1, "text-davinci-003");
 
         // create a Call object for the API request
         Call<GPT3Response> call = api.generateText(request);
@@ -99,18 +102,25 @@ public class GenerateFragment extends Fragment {
                 if (response.isSuccessful()) {
                     // handle the API response
                     GPT3Response apiResponse = response.body();
-                    // avoid null pointer exception
-                    assert apiResponse != null;
-                    String generatedText = apiResponse.getText();
-                    // format and display the generated text
-                    String formattedText = formatText(generatedText);
-                    // Do not do anything with response just yet
-                    // textView.setText(formattedText);
+                    String generatedText = apiResponse.getGeneratedText();
+
+                    View root = binding.getRoot();
+
+                    // Get a reference to the text view
+                    TextView promptDisplay = root.findViewById(R.id.prompt_display);
+
+                    promptDisplay.setText(generatedText);
+                    recipeText = generatedText;
+
                 } else {
                     // handle API error
                     // avoid null pointer exception
-                    assert response.errorBody() != null;
-                    Log.e(TAG, "API call failed: " + response.errorBody());
+                    try {
+                        String errorResponse = response.errorBody().string();
+                        Log.e(TAG, "API call failed (responseFail): " + errorResponse);
+                    } catch (IOException e) {
+                        Log.e(TAG, "Failed to parse error response: " + e.getMessage());
+                    }
                 }
             }
 
@@ -118,7 +128,7 @@ public class GenerateFragment extends Fragment {
             public void onFailure(@NonNull Call<GPT3Response> call, @NonNull Throwable t) {
                 this.call = call;
                 // handle API error
-                Log.e(TAG, "API call failed: " + t.getMessage());
+                Log.e(TAG, "API call failed (generalFail): " + t.getMessage());
             }
         });
     }
@@ -149,7 +159,7 @@ public class GenerateFragment extends Fragment {
         for (DocumentSnapshot documentSnapshot : querySnapshot.getDocuments()) {
             Map<String, Object> data = documentSnapshot.getData();
                 String ingredientName = (String) data.get("name");
-                    System.out.println("Ingredient:" + ingredientName);
+                    // System.out.println("Ingredient:" + ingredientName);
                     results.add(ingredientName);
         }
 
