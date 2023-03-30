@@ -22,6 +22,7 @@ import com.example.recipeai.GPT3Api.GPT3Request;
 import com.example.recipeai.GPT3Api.GPT3Response;
 import com.example.recipeai.R;
 import com.example.recipeai.databinding.FragmentGenerateBinding;
+import com.example.recipeai.model.Recipe;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -31,6 +32,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.io.IOException;
@@ -43,6 +45,7 @@ public class GenerateFragment extends Fragment {
     private FragmentGenerateBinding binding;
     private FirebaseFirestore firestoreDb;
     private Query query;
+    private Recipe myRecipe;
 
     private static final String BASE_URL = "https://api.openai.com/v1/";
 
@@ -58,6 +61,7 @@ public class GenerateFragment extends Fragment {
 
                 // Get a reference to the button view
                 Button generateRecipe = root.findViewById(R.id.generate_btn);
+                Button saveRecipe = root.findViewById(R.id.save_recipe_button);
 
                 // Get a reference to the text view
                 TextView promptDisplay = root.findViewById(R.id.prompt_display);
@@ -70,6 +74,15 @@ public class GenerateFragment extends Fragment {
                         makeApiCall(300, generatePrompt());
                     }
                 });
+
+                saveRecipe.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        saveRecipe();
+                    }
+
+                });
+
 
         return root;
     }
@@ -103,6 +116,7 @@ public class GenerateFragment extends Fragment {
                     // handle the API response
                     GPT3Response apiResponse = response.body();
                     String generatedText = apiResponse.getGeneratedText();
+                    myRecipe = convertResponseToRecipe(generatedText);
 
                     View root = binding.getRoot();
 
@@ -170,19 +184,34 @@ public class GenerateFragment extends Fragment {
         return String.format(getString(R.string.PROMPT_TEMPLATE), ingredients);
     }
 
-    @SuppressLint("DefaultLocale")
-    private String formatText(String text) {
+    private Recipe convertResponseToRecipe(String text) {
         // split the text into separate lines
         String[] lines = text.split("\n");
+        List<String> steps = Arrays.asList(lines);
 
-        // add a bullet point to each line
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < lines.length; i++) {
-            builder.append(String.format("%d. %s\n", i + 1, lines[i]));
+        List<String> finalSteps = new ArrayList<>();
+        for(int i = 0; i<steps.size();i++){
+            if(!steps.get(i).isEmpty()){
+                finalSteps.add(steps.get(i));
+            }
         }
+        String name = finalSteps.get(0);
+        finalSteps.remove(0);
+        finalSteps.remove(0);
 
-        return builder.toString();
+        Log.i("name", name);
+        Log.i("steps", finalSteps.toString());
+
+        Recipe recipe = new Recipe(name, finalSteps);
+        return recipe;
     }
+
+    private void saveRecipe(){
+
+
+
+    }
+
 
 
     @Override
@@ -190,6 +219,8 @@ public class GenerateFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
+
 
 
 }
