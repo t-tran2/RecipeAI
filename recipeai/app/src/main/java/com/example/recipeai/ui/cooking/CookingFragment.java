@@ -19,6 +19,10 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.recipeai.R;
 import com.example.recipeai.databinding.FragmentCookingBinding;
+import com.example.recipeai.model.Recipe;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CookingFragment extends Fragment implements SensorEventListener, View.OnClickListener {
 
@@ -27,15 +31,13 @@ public class CookingFragment extends Fragment implements SensorEventListener, Vi
     private Sensor mLight;
     private TextView sensorText, stepText;
     private Button nextButton, previousButton;
-    private CookingViewModel myCookingViewModel;
+    private Recipe myCookingViewModel;
     private float timestamp;
     private boolean covered, lastEventCovered;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        com.example.recipeai.ui.cooking.CookingViewModel cookingViewModel =
-                new ViewModelProvider(this).get(com.example.recipeai.ui.cooking.CookingViewModel.class);
 
         binding = FragmentCookingBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -49,8 +51,11 @@ public class CookingFragment extends Fragment implements SensorEventListener, Vi
         previousButton = root.findViewById(R.id.previous_step);
         nextButton.setOnClickListener(this);
         previousButton.setOnClickListener(this);
-
-        myCookingViewModel = new CookingViewModel();
+        List<String> steps = new ArrayList<>();
+        steps.add("hi");
+        steps.add("bye");
+        steps.add("hello");
+        myCookingViewModel = new Recipe("recipe", steps);
         lastEventCovered = false;
 
 
