@@ -20,6 +20,8 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.recipeai.R;
 import com.example.recipeai.databinding.FragmentCookingBinding;
 import com.example.recipeai.model.Recipe;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,12 +37,18 @@ public class CookingFragment extends Fragment implements SensorEventListener, Vi
     private float timestamp;
     private boolean covered, lastEventCovered;
 
+    private DocumentReference userId;
+    private FirebaseFirestore firestoreDb;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         binding = FragmentCookingBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        FirebaseFirestore.setLoggingEnabled(true);
+        firestoreDb = FirebaseFirestore.getInstance();
 
 //      cookingViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
@@ -55,7 +63,10 @@ public class CookingFragment extends Fragment implements SensorEventListener, Vi
         steps.add("hi");
         steps.add("bye");
         steps.add("hello");
-        myCookingViewModel = new Recipe("recipe", steps);
+
+        DocumentReference userDocRef = firestoreDb.collection("users").document("VmpfS4tyaSUn64ucP203");
+
+        myCookingViewModel = new Recipe("recipe", steps, userDocRef);
         lastEventCovered = false;
 
 

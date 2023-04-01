@@ -6,11 +6,13 @@ import static java.lang.Thread.*;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -33,6 +35,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.io.IOException;
@@ -46,6 +49,10 @@ public class GenerateFragment extends Fragment {
     private FirebaseFirestore firestoreDb;
     private Query query;
     private Recipe myRecipe;
+    private Button saveRecipe;
+
+    private ProgressBar spinner;
+
 
     private static final String BASE_URL = "https://api.openai.com/v1/";
 
@@ -59,9 +66,15 @@ public class GenerateFragment extends Fragment {
                 binding = FragmentGenerateBinding.inflate(inflater, container, false);
                 View root = binding.getRoot();
 
+                FirebaseFirestore.setLoggingEnabled(true);
+                firestoreDb = FirebaseFirestore.getInstance();
+
                 // Get a reference to the button view
                 Button generateRecipe = root.findViewById(R.id.generate_btn);
-                Button saveRecipe = root.findViewById(R.id.save_recipe_button);
+                saveRecipe = root.findViewById(R.id.save_recipe_button);
+                saveRecipe.setVisibility(View.GONE);
+                spinner = root.findViewById(R.id.progressBar);
+                spinner.setVisibility(View.GONE);
 
                 // Get a reference to the text view
                 TextView promptDisplay = root.findViewById(R.id.prompt_display);
@@ -71,8 +84,12 @@ public class GenerateFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         //System.out.println(generatePrompt());
+                        promptDisplay.setText("");
+                        saveRecipe.setVisibility(View.GONE);
+                        spinner.setVisibility(View.VISIBLE);
                         makeApiCall(300, generatePrompt());
                     }
+
                 });
 
                 saveRecipe.setOnClickListener(new View.OnClickListener(){
@@ -82,8 +99,6 @@ public class GenerateFragment extends Fragment {
                     }
 
                 });
-
-
         return root;
     }
 
@@ -122,9 +137,12 @@ public class GenerateFragment extends Fragment {
 
                     // Get a reference to the text view
                     TextView promptDisplay = root.findViewById(R.id.prompt_display);
-
+                    promptDisplay.setMovementMethod(new ScrollingMovementMethod());
                     promptDisplay.setText(generatedText);
                     recipeText = generatedText;
+                    saveRecipe.setVisibility(View.VISIBLE);
+                    spinner.setVisibility(View.GONE);
+
 
                 } else {
                     // handle API error
@@ -158,7 +176,7 @@ public class GenerateFragment extends Fragment {
         // Execute the query and get the results
         Task<QuerySnapshot> querySnapshotTask = query.get();
         while (!querySnapshotTask.isComplete()) {
-            // Wait for the query to complete
+
         }
 
 //        Debug
@@ -201,26 +219,24 @@ public class GenerateFragment extends Fragment {
 
         Log.i("name", name);
         Log.i("steps", finalSteps.toString());
-
-        Recipe recipe = new Recipe(name, finalSteps);
+        DocumentReference userDocRef = firestoreDb.collection("users").document("VmpfS4tyaSUn64ucP203");
+        Recipe recipe = new Recipe(name, finalSteps, userDocRef);
         return recipe;
     }
 
     private void saveRecipe(){
-
-
-
+        CollectionReference db = firestoreDb.collection("recipes");
+        Map<String, Object> docData = new HashMap<>();
+        docData.put("steps", myRecipe.getSteps());
+        docData.put("name", myRecipe.getName());
+        docData.put("userId", myRecipe.getUserId());
+        db.add(docData);
     }
-
-
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
     }
-
-
-
 
 }

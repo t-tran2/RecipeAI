@@ -1,5 +1,7 @@
 package com.example.recipeai.model;
 
+import com.google.firebase.firestore.DocumentReference;
+
 import java.util.List;
 
 public class Recipe {
@@ -7,11 +9,15 @@ public class Recipe {
     private List<String> steps;
     private int currentStepIndex;
     private String name;
+    private DocumentReference userId;
 
-    public Recipe(String name, List<String> steps) {
+
+
+    public Recipe(String name, List<String> steps, DocumentReference userId) {
         this.steps = steps;
         this.name = name;
-        currentStepIndex= 0;
+        this.userId = userId;
+        this.currentStepIndex= 0;
 
     }
 
@@ -35,6 +41,17 @@ public class Recipe {
     public String getCurrentStep(){
         return steps.get(currentStepIndex);
     }
+    public List<String> getSteps(){
+        return this.steps;
+    }
+
+    public DocumentReference getUserId(){
+        return this.userId;
+    }
+    public String getName(){
+        return this.name;
+    }
+
 
 
 }
