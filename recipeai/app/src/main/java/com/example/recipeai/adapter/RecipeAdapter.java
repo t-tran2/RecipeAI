@@ -29,7 +29,7 @@ public class RecipeAdapter extends ListAdapter<Recipe, RecipeAdapter.ViewHolder>
         super(new DiffUtil.ItemCallback<Recipe>() {
             @Override
             public boolean areItemsTheSame(Recipe oldItem, Recipe newItem) {
-                return oldItem.getId() == newItem.getId();
+                return oldItem.getDocId() == newItem.getDocId();
                 // TODO: IMPLEMENT
 //                 return false;
             }

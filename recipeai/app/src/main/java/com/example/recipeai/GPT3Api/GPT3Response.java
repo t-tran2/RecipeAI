@@ -1,13 +1,34 @@
 package com.example.recipeai.GPT3Api;
 
-public class GPT3Response {
-    private String text;
+import com.google.gson.annotations.SerializedName;
+import java.util.List;
 
-    public String getText() {
-        return text;
+public class GPT3Response {
+
+    @SerializedName("choices")
+    private List<Choice> choices;
+
+    public String getGeneratedText() {
+        if (choices != null && !choices.isEmpty()) {
+            return choices.get(0).text;
+        }
+        return null;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    private static class Choice {
+        @SerializedName("text")
+        private String text;
+
+        @SerializedName("index")
+        private int index;
+
+        @SerializedName("logprobs")
+        private Object logprobs;
+
+        @SerializedName("finish_reason")
+        private String finishReason;
+
+        @SerializedName("prompt")
+        private String prompt;
     }
 }
