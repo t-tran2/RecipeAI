@@ -47,16 +47,10 @@ public class GenerateFragment extends Fragment {
 
     private FragmentGenerateBinding binding;
     private FirebaseFirestore firestoreDb;
-    private Query query;
     private Recipe myRecipe;
     private Button saveRecipe;
-
     private ProgressBar spinner;
-
-
     private static final String BASE_URL = "https://api.openai.com/v1/";
-
-    private GPT3Api gpt3Api;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -214,7 +208,6 @@ public class GenerateFragment extends Fragment {
             }
         }
         String name = finalSteps.get(0);
-        finalSteps.remove(0);
         finalSteps.remove(0);
 
         Log.i("name", name);

@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.recipeai.R;
@@ -31,14 +33,15 @@ public class CookingFragment extends Fragment implements SensorEventListener, Vi
     private FragmentCookingBinding binding;
     private SensorManager sensorManager;
     private Sensor mLight;
-    private TextView sensorText, stepText;
+    private TextView sensorText, stepText, recipeNameText;
     private Button nextButton, previousButton;
-    private Recipe myCookingViewModel;
+    private Recipe myRecipe;
     private float timestamp;
     private boolean covered, lastEventCovered;
-
-    private DocumentReference userId;
     private FirebaseFirestore firestoreDb;
+    private LiveData<Recipe> myLiveData;
+    private CookingViewModel myCookingViewModel;
+
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -50,26 +53,23 @@ public class CookingFragment extends Fragment implements SensorEventListener, Vi
         FirebaseFirestore.setLoggingEnabled(true);
         firestoreDb = FirebaseFirestore.getInstance();
 
-//      cookingViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        myCookingViewModel = new ViewModelProvider(requireActivity()).get(CookingViewModel.class);
+
         sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         mLight = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
         sensorText = root.findViewById(R.id.text_cooking);
         stepText = root.findViewById(R.id.text_step);
+        recipeNameText = root.findViewById(R.id.recipeNameText);
         nextButton = root.findViewById(R.id.next_step);
         previousButton = root.findViewById(R.id.previous_step);
         nextButton.setOnClickListener(this);
         previousButton.setOnClickListener(this);
-        List<String> steps = new ArrayList<>();
-        steps.add("hi");
-        steps.add("bye");
-        steps.add("hello");
 
-        DocumentReference userDocRef = firestoreDb.collection("users").document("VmpfS4tyaSUn64ucP203");
-
-        myCookingViewModel = new Recipe("recipe", steps, userDocRef);
+        myLiveData = myCookingViewModel.getCookRecipe();
+        myRecipe = myLiveData.getValue();
+        stepText.setText(myRecipe.getCurrentStep());
+        recipeNameText.setText(myRecipe.getName());
         lastEventCovered = false;
-
-
         return root;
     }
 
@@ -87,17 +87,15 @@ public class CookingFragment extends Fragment implements SensorEventListener, Vi
         if (!covered) {
             if(lastEventCovered) {
                 if ((event.timestamp - timestamp) / 1000000 > 1500) {
-                    myCookingViewModel.previousStep();
-
+                    myRecipe.previousStep();
                 } else if ((event.timestamp - timestamp) / 1000000 > 500) {
-                    myCookingViewModel.nextStep();
-
+                    myRecipe.nextStep();
                 }
             }
             timestamp = event.timestamp;
         }
         lastEventCovered = covered;
-        stepText.setText(myCookingViewModel.getCurrentStep());
+        stepText.setText(myRecipe.getCurrentStep());
     }
 
     @Override
@@ -122,11 +120,11 @@ public class CookingFragment extends Fragment implements SensorEventListener, Vi
     public void onClick(View view) {
         Log.d("hi", "bruh");
        if (view.getId() == R.id.next_step){
-           myCookingViewModel.nextStep();
-           stepText.setText(myCookingViewModel.getCurrentStep());
+           myRecipe.nextStep();
+           stepText.setText(myRecipe.getCurrentStep());
        } else if (view.getId() == R.id.previous_step){
-           myCookingViewModel.previousStep();
-           stepText.setText(myCookingViewModel.getCurrentStep());
+           myRecipe.previousStep();
+           stepText.setText(myRecipe.getCurrentStep());
        }
     }
 
