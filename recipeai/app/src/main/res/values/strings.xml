@@ -13,5 +13,5 @@
     <string name="add_ingredients_title">Add Ingredients</string>
     <string name="cook_btn">Cook</string>
     <string name="remove_recipe">Remove</string>
-    <string name="PROMPT_TEMPLATE">You will create a step-by-step recipe using the ingredients I give you. You may not deviate from those ingredients, but you aren\'t required to use all of them. If the ingredient is not edible, do not include it. You will give me the instructions in a numbered list. Here is the list of ingredients: %s.\n First, name the recipe, then proceed.</string>
+    <string name="PROMPT_TEMPLATE">You will create a step-by-step recipe using the ingredients I give you. You may not deviate from those ingredients, but you aren\'t required to use all of them. If the ingredient is not edible, do not include it. You will give me the instructions in a numbered list no longer than 400 tokens. Here is the list of ingredients: %s.\n First, name the recipe, then proceed.</string>
 </resources>

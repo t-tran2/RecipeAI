@@ -87,7 +87,7 @@ public class GenerateFragment extends Fragment {
                         promptDisplay.setText("");
                         saveRecipe.setVisibility(View.GONE);
                         spinner.setVisibility(View.VISIBLE);
-                        makeApiCall(300, generatePrompt());
+                        makeApiCall(400, generatePrompt());
                     }
 
                 });
