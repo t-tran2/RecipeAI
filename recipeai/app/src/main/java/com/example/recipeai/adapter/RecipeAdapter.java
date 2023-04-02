@@ -67,6 +67,7 @@ public class RecipeAdapter extends ListAdapter<Recipe, RecipeAdapter.ViewHolder>
         // Example: holder.textView.setText(.....)
         Log.w("onBind Recipe", recipe.getName());
         holder.getRecipeName().setText(recipe.getName());
+        holder.getScrollViewText().setText(recipe.getStepsString());
     }
 
 //    @Override
@@ -108,6 +109,10 @@ public class RecipeAdapter extends ListAdapter<Recipe, RecipeAdapter.ViewHolder>
         }
         public void setRecipe(Recipe recipe) {
             this.recipe = recipe;
+        }
+
+        public TextView getScrollViewText() {
+            return this.binding.steps;
         }
     }
 

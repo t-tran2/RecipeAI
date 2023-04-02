@@ -81,6 +81,15 @@ public class Recipe {
         return this.steps;
     }
 
+    public String getStepsString(){
+        StringBuilder stepsStr = new StringBuilder();
+        for (String step : this.steps) {
+            stepsStr.append(step + "\n");
+        }
+        return stepsStr.toString();
+    }
+
+
     public DocumentReference getUserId(){
         return this.userId;
     }

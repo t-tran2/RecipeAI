@@ -41,6 +41,8 @@ public class LibraryFragment extends Fragment {
         RecipeViewModel recipeViewModel = new ViewModelProvider(this).get(RecipeViewModel.class);
         recipeAdapter = new RecipeAdapter();
         binding.recipeRecyclerview.setAdapter(recipeAdapter);
+        binding.recipeRecyclerview.setNestedScrollingEnabled(true);
+
         // Observe Recipes liveData
         recipeViewModel.getRecipes().observe(getViewLifecycleOwner(), new Observer<List<Recipe>>() {
             @Override
