@@ -93,6 +93,14 @@ public class RecipeAdapter extends ListAdapter<Recipe, RecipeAdapter.ViewHolder>
                     Log.w("COOKING VIEW MODEL", cookingViewModel.getCookRecipe().getValue().toString());
                 }
             });
+
+            // Remove recipe
+            binding.removeRecipe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    recipe.removeFromFirestore();
+                }
+            });
         }
 
         public TextView getRecipeName() {
@@ -103,23 +111,7 @@ public class RecipeAdapter extends ListAdapter<Recipe, RecipeAdapter.ViewHolder>
         }
     }
 
-    private void deleteRecipeFromFirestore(String recipeId) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("recipes").document(recipeId)
-                .delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-//                        Toast.makeText(itemView.getContext(), "Recipe deleted", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-//                        Toast.makeText(itemView.getContext(), "Error deleting recipe: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
+
 
 
 }
