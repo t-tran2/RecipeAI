@@ -49,7 +49,7 @@ public class RecipeViewModel extends ViewModel {
         });
     }
 
-    public LiveData<List<Recipe>> getRecipes() {
+    public MutableLiveData<List<Recipe>> getRecipes() {
         return recipesLiveData;
     }
 }

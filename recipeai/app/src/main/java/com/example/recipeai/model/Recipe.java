@@ -15,6 +15,9 @@ public class Recipe {
     private String name;
     private DocumentReference userId;
 
+    public Recipe() {
+
+    }
 
     public Recipe(String name, List<String> steps, DocumentReference userId) {
         this.steps = steps;
