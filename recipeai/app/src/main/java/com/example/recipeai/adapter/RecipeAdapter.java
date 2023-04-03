@@ -91,12 +91,11 @@ public class RecipeAdapter extends ListAdapter<Recipe, RecipeAdapter.ViewHolder>
             this.binding = binding;
             cookingViewModel = new ViewModelProvider((ViewModelStoreOwner) context).get(CookingViewModel.class);
 
-            // TODO: set on click event listeners
             binding.cookBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     cookingViewModel.getCookRecipe().setValue(recipe);
-                    navController.navigate(R.id.action_navigation_library_to_navigation_cooking3);
+                    navController.navigate(R.id.action_navigation_library_to_navigation_cooking);
 
                 }
             });

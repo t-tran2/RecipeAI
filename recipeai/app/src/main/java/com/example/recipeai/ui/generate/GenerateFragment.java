@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.recipeai.GPT3Api.GPT3Api;
 import com.example.recipeai.GPT3Api.GPT3Request;
 import com.example.recipeai.GPT3Api.GPT3Response;
+import com.example.recipeai.MainActivity;
 import com.example.recipeai.R;
 import com.example.recipeai.databinding.FragmentGenerateBinding;
 import com.example.recipeai.model.Recipe;
@@ -78,6 +79,7 @@ public class GenerateFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         //System.out.println(generatePrompt());
+                        ((MainActivity) getActivity()).hideBottomAppBar();
                         promptDisplay.setText("");
                         saveRecipe.setVisibility(View.GONE);
                         spinner.setVisibility(View.VISIBLE);
@@ -137,6 +139,7 @@ public class GenerateFragment extends Fragment {
                     saveRecipe.setVisibility(View.VISIBLE);
                     spinner.setVisibility(View.GONE);
 
+                    ((MainActivity) getActivity()).showBottomAppBar();
 
                 } else {
                     // handle API error

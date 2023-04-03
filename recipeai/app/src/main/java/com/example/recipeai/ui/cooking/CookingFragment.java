@@ -1,5 +1,6 @@
 package com.example.recipeai.ui.cooking;
 
+import android.app.Activity;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -18,7 +19,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
+import com.example.recipeai.MainActivity;
 import com.example.recipeai.R;
 import com.example.recipeai.databinding.FragmentCookingBinding;
 import com.example.recipeai.model.Recipe;
@@ -34,7 +38,7 @@ public class CookingFragment extends Fragment implements SensorEventListener, Vi
     private SensorManager sensorManager;
     private Sensor mLight;
     private TextView sensorText, stepText, recipeNameText;
-    private Button nextButton, previousButton;
+    private Button nextButton, previousButton, returnToLibraryButton;
     private Recipe myRecipe;
     private float timestamp;
     private boolean covered, lastEventCovered;
@@ -62,8 +66,11 @@ public class CookingFragment extends Fragment implements SensorEventListener, Vi
         recipeNameText = root.findViewById(R.id.recipeNameText);
         nextButton = root.findViewById(R.id.next_step);
         previousButton = root.findViewById(R.id.previous_step);
+        returnToLibraryButton = root.findViewById(R.id.cooking_back_button);
+
         nextButton.setOnClickListener(this);
         previousButton.setOnClickListener(this);
+        returnToLibraryButton.setOnClickListener(this);
 
         myLiveData = myCookingViewModel.getCookRecipe();
         myRecipe = myLiveData.getValue();
@@ -125,6 +132,10 @@ public class CookingFragment extends Fragment implements SensorEventListener, Vi
        } else if (view.getId() == R.id.previous_step){
            myRecipe.previousStep();
            stepText.setText(myRecipe.getCurrentStep());
+       } else if (view.getId() == R.id.cooking_back_button){
+           Activity MainActivity = this.getActivity();
+           NavController navController = Navigation.findNavController(MainActivity, R.id.nav_host_fragment_activity_main);
+           navController.navigate(R.id.action_navigation_cooking_to_navigation_library);
        }
     }
 
