@@ -86,6 +86,15 @@ public class MainActivity extends AppCompatActivity {
 //        });
     }
 
+    // Handle back button in action bar to navigate back to previous fragment
+    @Override
+    public boolean onSupportNavigateUp() {
+        // Get the NavController from the NavHostFragment
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_activity_main);
+        NavController navController = navHostFragment.getNavController();
+        return navController.navigateUp() || super.onSupportNavigateUp();
+    }
+
 
     public void hideBottomAppBar() {
         BottomNavigationView navView = findViewById(R.id.nav_view);
