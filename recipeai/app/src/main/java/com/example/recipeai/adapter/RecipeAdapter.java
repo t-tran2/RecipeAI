@@ -8,8 +8,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.recipeai.R;
 import com.example.recipeai.databinding.RecipeViewholderBinding;
 import com.example.recipeai.model.Recipe;
+import com.example.recipeai.ui.cooking.CookingFragment;
 import com.example.recipeai.ui.cooking.CookingViewModel;
 import com.example.recipeai.ui.library.RecipeViewModel;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -54,8 +60,9 @@ public class RecipeAdapter extends ListAdapter<Recipe, RecipeAdapter.ViewHolder>
     @NonNull
     @Override
     public RecipeAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        NavController navController = Navigation.findNavController(parent);
         return new ViewHolder(RecipeViewholderBinding.inflate(
-                LayoutInflater.from(parent.getContext()), parent, false), parent.getContext());
+                LayoutInflater.from(parent.getContext()), parent, false), parent.getContext(), navController);
     }
 
     @Override
@@ -67,7 +74,6 @@ public class RecipeAdapter extends ListAdapter<Recipe, RecipeAdapter.ViewHolder>
         // Example: holder.textView.setText(.....)
         Log.w("onBind Recipe", recipe.getName());
         holder.getRecipeName().setText(recipe.getName());
-        holder.getScrollViewText().setText(recipe.getStepsString());
     }
 
 //    @Override
@@ -80,18 +86,18 @@ public class RecipeAdapter extends ListAdapter<Recipe, RecipeAdapter.ViewHolder>
         private Recipe recipe;
         private CookingViewModel cookingViewModel;
 
-        public ViewHolder(RecipeViewholderBinding binding, Context context) {
+        public ViewHolder(RecipeViewholderBinding binding, Context context, NavController navController) {
             super(binding.getRoot());
             this.binding = binding;
             cookingViewModel = new ViewModelProvider((ViewModelStoreOwner) context).get(CookingViewModel.class);
-
 
             // TODO: set on click event listeners
             binding.cookBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     cookingViewModel.getCookRecipe().setValue(recipe);
-                    Log.w("COOKING VIEW MODEL", cookingViewModel.getCookRecipe().getValue().toString());
+                    navController.navigate(R.id.action_navigation_library_to_navigation_cooking3);
+
                 }
             });
 
@@ -111,9 +117,6 @@ public class RecipeAdapter extends ListAdapter<Recipe, RecipeAdapter.ViewHolder>
             this.recipe = recipe;
         }
 
-        public TextView getScrollViewText() {
-            return this.binding.steps;
-        }
     }
 
 
