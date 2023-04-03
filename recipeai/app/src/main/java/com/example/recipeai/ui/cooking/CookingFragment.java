@@ -62,6 +62,7 @@ public class CookingFragment extends Fragment implements SensorEventListener, Vi
         sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         mLight = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
         sensorText = root.findViewById(R.id.text_cooking);
+        sensorText.setVisibility(View.GONE);
         stepText = root.findViewById(R.id.text_step);
         recipeNameText = root.findViewById(R.id.recipeNameText);
         nextButton = root.findViewById(R.id.next_step);
