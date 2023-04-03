@@ -96,7 +96,6 @@ public class RecipeAdapter extends ListAdapter<Recipe, RecipeAdapter.ViewHolder>
                 public void onClick(View view) {
                     cookingViewModel.getCookRecipe().setValue(recipe);
                     navController.navigate(R.id.action_navigation_library_to_navigation_cooking);
-
                 }
             });
 

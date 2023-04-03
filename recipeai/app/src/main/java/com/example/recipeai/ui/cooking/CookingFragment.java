@@ -9,12 +9,15 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
@@ -47,6 +50,12 @@ public class CookingFragment extends Fragment implements SensorEventListener, Vi
     private CookingViewModel myCookingViewModel;
 
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Set action bar title when cooking mode entered.
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Cooking Mode");
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -139,5 +148,7 @@ public class CookingFragment extends Fragment implements SensorEventListener, Vi
            navController.navigate(R.id.action_navigation_cooking_to_navigation_library);
        }
     }
+
+
 
 }
