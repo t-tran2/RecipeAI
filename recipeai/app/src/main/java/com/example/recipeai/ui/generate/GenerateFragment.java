@@ -211,6 +211,8 @@ public class GenerateFragment extends Fragment {
             }
         }
         String name = finalSteps.get(0);
+        name = name.split(":")[1];
+
         finalSteps.remove(0);
 
         Log.i("name", name);
