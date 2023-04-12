@@ -9,12 +9,29 @@ android {
 
     defaultConfig {
         applicationId "com.example.recipeai"
-        minSdk 24
+        minSdkVersion 24
+        compileSdkVersion 33
+        maxSdkVersion 33
         targetSdk 33
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
+    sourceSets {
+        main {
+            // Main source set configuration
+        }
+        test {
+            java.srcDirs = ['src/test/java']
+        }
     }
 
     buildTypes {
@@ -23,6 +40,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -40,14 +58,21 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
     implementation 'androidx.navigation:navigation-fragment:2.5.3'
     implementation 'androidx.navigation:navigation-ui:2.5.3'
     implementation 'com.google.firebase:firebase-database:20.1.0'
+    debugImplementation 'androidx.fragment:fragment-testing:1.5.6'
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    // For unit tests
+    testImplementation 'org.mockito:mockito-core:5.3.0'
+
+    // For Android unit tests
+    testImplementation 'org.mockito:mockito-android:5.3.0'
+
+    testImplementation 'org.robolectric:robolectric:4.6.1'
 
     // Import the BoM for the Firebase platform
     implementation platform('com.google.firebase:firebase-bom:31.2.3')
@@ -56,6 +81,9 @@ dependencies {
     // Google Analytics
     implementation 'com.google.firebase:firebase-analytics-ktx'
 
+
     // Cloud Firestore
     implementation 'com.google.firebase:firebase-firestore'
+    androidTestImplementation 'androidx.test:core:1.5.2'
+    androidTestImplementation 'androidx.test:runner:1.5.2'
 }
