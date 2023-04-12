@@ -123,7 +123,7 @@ public class GenerateFragment extends Fragment {
         });
     }
 
-    private String generatePrompt() {
+    public String generatePrompt() {
         FirebaseFirestore firestoreDb = FirebaseFirestore.getInstance();
 
         // Fetch ingredients collection from Firebase Firestore
