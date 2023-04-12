@@ -35,6 +35,13 @@ public class Recipe {
 
     }
 
+    public Recipe(String name, List<String> steps) {
+        this.steps = steps;
+        this.name = name;
+        this.currentStepIndex= 0;
+
+    }
+
     public void addStep(String step){
         steps.add(step);
     }
