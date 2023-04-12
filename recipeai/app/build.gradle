@@ -39,6 +39,19 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+
+        android {
+            buildTypes {
+                debug {
+                    configurations {
+                        all*.exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk7'
+                        all*.exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk8'
+                    }
+
+                }
+            }
+        }
+
     }
 
     compileOptions {
@@ -66,13 +79,6 @@ dependencies {
     debugImplementation 'androidx.fragment:fragment-testing:1.5.6'
     testImplementation 'junit:junit:4.13.2'
 
-    // For unit tests
-    testImplementation 'org.mockito:mockito-core:5.3.0'
-
-    // For Android unit tests
-    testImplementation 'org.mockito:mockito-android:5.3.0'
-
-    testImplementation 'org.robolectric:robolectric:4.6.1'
 
     // Import the BoM for the Firebase platform
     implementation platform('com.google.firebase:firebase-bom:31.2.3')
@@ -81,9 +87,12 @@ dependencies {
     // Google Analytics
     implementation 'com.google.firebase:firebase-analytics-ktx'
 
-
     // Cloud Firestore
     implementation 'com.google.firebase:firebase-firestore'
-    androidTestImplementation 'androidx.test:core:1.5.2'
-    androidTestImplementation 'androidx.test:runner:1.5.2'
+    androidTestImplementation 'androidx.test:core:1.4.0'
+    androidTestImplementation 'androidx.test:runner:1.4.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.5.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.5.1'
+
 }
