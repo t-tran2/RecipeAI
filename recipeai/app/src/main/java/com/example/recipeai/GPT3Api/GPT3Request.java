@@ -2,11 +2,15 @@ package com.example.recipeai.GPT3Api;
 
 public class GPT3Request {
     private String prompt;
-    private int maxTokens;
+    private int max_tokens;
+    private double temperature;
+    private String model;
 
-    public GPT3Request(String prompt, int maxTokens) {
+    public GPT3Request(String prompt, int max_tokens, double temperature, String model) {
         this.prompt = prompt;
-        this.maxTokens = maxTokens;
+        this.max_tokens = max_tokens;
+        this.temperature = temperature;
+        this.model = model;
     }
 
     public String getPrompt() {
@@ -17,11 +21,28 @@ public class GPT3Request {
         this.prompt = prompt;
     }
 
-    public int getMaxTokens() {
-        return maxTokens;
+    public int getmax_tokens() {
+        return max_tokens;
     }
 
-    public void setMaxTokens(int maxTokens) {
-        this.maxTokens = maxTokens;
+    public void setmax_tokens(int max_tokens) {
+        this.max_tokens = max_tokens;
+
+    }
+
+    public double getTemperature() {
+        return temperature;
+    }
+
+    public void setTemperature(double temperature) {
+        this.temperature = temperature;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
     }
 }

@@ -19,4 +19,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recipe_recyclerview"
+        android:layout_width="0dp"
+        android:layout_height="556dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/text_notifications"
+        app:layout_constraintStart_toStartOf="@+id/text_notifications" />
+
+    <TextView
+        android:id="@+id/library_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/library_title"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/recipe_recyclerview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

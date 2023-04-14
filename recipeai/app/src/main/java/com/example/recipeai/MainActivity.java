@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_library, R.id.navigation_generate, R.id.navigation_ingredients, R.id.navigation_cooking)
+                R.id.navigation_library, R.id.navigation_generate, R.id.navigation_ingredients)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
@@ -84,6 +84,15 @@ public class MainActivity extends AppCompatActivity {
 //                Log.w(TAG, "Failed to read value.", error.toException());
 //            }
 //        });
+    }
+
+    // Handle back button in action bar to navigate back to previous fragment
+    @Override
+    public boolean onSupportNavigateUp() {
+        // Get the NavController from the NavHostFragment
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_activity_main);
+        NavController navController = navHostFragment.getNavController();
+        return navController.navigateUp() || super.onSupportNavigateUp();
     }
 
 

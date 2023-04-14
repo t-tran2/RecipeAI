@@ -1,19 +1,16 @@
 package com.example.recipeai.ui.cooking;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.recipeai.model.Recipe;
+
 public class CookingViewModel extends ViewModel {
-
-    private final MutableLiveData<String> mText;
-
-    public CookingViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is dashboard fragment");
-    }
-
-    public LiveData<String> getText() {
-        return mText;
+    private MutableLiveData<Recipe> recipeLiveData;
+    public MutableLiveData<Recipe> getCookRecipe() {
+        if (recipeLiveData == null) {
+            recipeLiveData = new MutableLiveData<>();
+        }
+        return recipeLiveData;
     }
 }

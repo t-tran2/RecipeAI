@@ -21,11 +21,19 @@
         android:id="@+id/navigation_cooking"
         android:name="com.example.recipeai.ui.cooking.CookingFragment"
         android:label="@string/title_generate"
-        tools:layout="@layout/fragment_cooking" />
+        tools:layout="@layout/fragment_cooking" >
+        <action
+            android:id="@+id/action_navigation_cooking_to_navigation_library"
+            app:destination="@id/navigation_library" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_library"
         android:name="com.example.recipeai.ui.library.LibraryFragment"
         android:label="@string/title_library"
-        tools:layout="@layout/fragment_library" />
+        tools:layout="@layout/fragment_library" >
+        <action
+            android:id="@+id/action_navigation_library_to_navigation_cooking"
+            app:destination="@id/navigation_cooking" />
+    </fragment>
 </navigation>
