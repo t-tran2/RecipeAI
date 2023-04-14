@@ -16,7 +16,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.recipeai.GPT3Api.GPT3Api;
@@ -26,6 +28,7 @@ import com.example.recipeai.MainActivity;
 import com.example.recipeai.R;
 import com.example.recipeai.databinding.FragmentGenerateBinding;
 import com.example.recipeai.model.Recipe;
+import com.example.recipeai.ui.cooking.CookingViewModel;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -52,10 +55,12 @@ public class GenerateFragment extends Fragment {
     private Button saveRecipe;
     private ProgressBar spinner;
     private static final String BASE_URL = "https://api.openai.com/v1/";
+    private GenerateViewModel generateViewModel;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        com.example.recipeai.ui.generate.GenerateViewModel generateViewModel =
+        generateViewModel =
                         new ViewModelProvider(this).get(com.example.recipeai.ui.generate.GenerateViewModel.class);
 
                 binding = FragmentGenerateBinding.inflate(inflater, container, false);
@@ -74,7 +79,16 @@ public class GenerateFragment extends Fragment {
                 // Get a reference to the text view
                 TextView promptDisplay = root.findViewById(R.id.prompt_display);
 
-                // Set an OnClickListener to the button view
+                generateViewModel.getGeneratedRecipe().observe(this, new Observer<String>() {
+                    @Override
+                    public void onChanged(@Nullable final String newGenRecipe) {
+                        // Update the UI, in this case, a TextView.
+                        promptDisplay.setText(newGenRecipe);
+                    }
+                });
+
+
+        // Set an OnClickListener to the button view
                 generateRecipe.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -134,7 +148,8 @@ public class GenerateFragment extends Fragment {
                     // Get a reference to the text view
                     TextView promptDisplay = root.findViewById(R.id.prompt_display);
                     promptDisplay.setMovementMethod(new ScrollingMovementMethod());
-                    promptDisplay.setText(generatedText);
+                    // change view model to new generated recipe
+                    generateViewModel.getGeneratedRecipe().setValue(generatedText);
                     recipeText = generatedText;
                     saveRecipe.setVisibility(View.VISIBLE);
                     spinner.setVisibility(View.GONE);

@@ -47,11 +47,22 @@ public class LibraryFragment extends Fragment {
         binding.recipeRecyclerview.setNestedScrollingEnabled(true);
 
         // Observe Recipes liveData
+        recipeViewModel.loadRecipes();
         recipeViewModel.getRecipes().observe(getViewLifecycleOwner(), new Observer<List<Recipe>>() {
             @Override
             public void onChanged(List<Recipe> recipes) {
-                Log.w("Recipe list onChanged", recipes.toString());
                 recipeAdapter.submitList(recipes);
+                recipeAdapter.notifyDataSetChanged();
+            }
+        });
+
+        binding.recipeRecyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    recipeViewModel.fetchMoreRecipes();
+                }
             }
         });
 

@@ -4,16 +4,16 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.recipeai.model.Recipe;
+
 public class GenerateViewModel extends ViewModel {
 
-    private final MutableLiveData<String> mText;
+    private MutableLiveData<String> genRecipeLiveData;
 
-    public GenerateViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is dashboard fragment");
-    }
-
-    public LiveData<String> getText() {
-        return mText;
+    public MutableLiveData<String> getGeneratedRecipe() {
+        if (genRecipeLiveData == null) {
+            genRecipeLiveData = new MutableLiveData<>();
+        }
+        return genRecipeLiveData;
     }
 }
