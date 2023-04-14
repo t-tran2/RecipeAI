@@ -5,6 +5,7 @@ import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 import static java.lang.Thread.*;
 
 import android.annotation.SuppressLint;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -115,6 +116,10 @@ public class GenerateFragment extends Fragment {
     String recipeText;
 
     public void makeApiCall(int max_tokens, String recipePrompt) {
+
+        int currentOrientation = getResources().getConfiguration().orientation;
+        getActivity().setRequestedOrientation(currentOrientation);
+
         // create a Retrofit instance
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -234,6 +239,7 @@ public class GenerateFragment extends Fragment {
         Log.i("steps", finalSteps.toString());
         DocumentReference userDocRef = firestoreDb.collection("users").document("VmpfS4tyaSUn64ucP203");
         Recipe recipe = new Recipe(name, finalSteps, userDocRef);
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);
         return recipe;
     }
 
