@@ -82,7 +82,7 @@ public class GenerateTest {
 
         // Check that textView changed
         onView(withId(R.id.prompt_display))
-                .check(matches(not(withText(""))));
+                .check(matches(not("")));
     }
 
 

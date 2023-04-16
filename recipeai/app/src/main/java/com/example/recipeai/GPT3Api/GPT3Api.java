@@ -8,7 +8,7 @@ import retrofit2.http.POST;
 public interface GPT3Api {
     @Headers({
             "Content-Type: application/json",
-            "Authorization: Bearer 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"
+            "Authorization: Bearer "
     })
     @POST("completions")
     Call<GPT3Response> generateText(@Body GPT3Request request);
