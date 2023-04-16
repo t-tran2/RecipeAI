@@ -94,9 +94,9 @@ public class GenerateFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         //System.out.println(generatePrompt());
-                        if (getActivity() != null) {
-                            ((MainActivity) getActivity()).hideBottomAppBar();
-                        }
+//                        if (getActivity() != null) {
+//                            ((MainActivity) getActivity()).hideBottomAppBar();
+//                        }
                         promptDisplay.setText("");
                         saveRecipe.setVisibility(View.GONE);
                         spinner.setVisibility(View.VISIBLE);
@@ -161,9 +161,9 @@ public class GenerateFragment extends Fragment {
                     saveRecipe.setVisibility(View.VISIBLE);
                     spinner.setVisibility(View.GONE);
 
-                    if (getActivity() != null) {
-                        ((MainActivity) getActivity()).showBottomAppBar();
-                    }
+//                    if (getActivity() != null) {
+//                        ((MainActivity) getActivity()).showBottomAppBar();
+//                    }
 
                 } else {
                     // handle API error
