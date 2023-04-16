@@ -83,8 +83,6 @@ public class AddIngredientsFragment extends Fragment{
         });
 
 
-
-
         return root;
 
     }

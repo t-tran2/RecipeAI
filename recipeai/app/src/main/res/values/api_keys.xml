@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="gpt3_api_key">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</string>
+    <string name="gpt3_api_key"></string>
 </resources>
